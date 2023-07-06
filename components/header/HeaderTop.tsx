@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 export default function HeaderTop() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
 
-  const [ showLoginModal, setShowLoginModal ] = useState(false);
-
   const links = [
     { href: "#", text: "즐겨찾기" },
     { href: "#", text: "알림" },
@@ -14,10 +12,6 @@ export default function HeaderTop() {
     { href: "#", text: "주문조회" },
     { href: "#", text: "마이페이지" },
   ];
-
-  const clickLoginModal = () => {
-    setShowLoginModal(true);
-  }
 
   return (
     <div className="flex justify-end py-2 border-b border-b-orange-100 select-none">

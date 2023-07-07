@@ -30,7 +30,7 @@ export const LoginForm = () => {
       (res: any) => {
         setIsLoggedIn(true);
         localStorage.setItem('loginInfo', JSON.stringify(res.data));
-        localStorage.setItem('isLoggedIn', `true`);
+        localStorage.setItem('LoggedIn', `true`);
         Router.replace('/');
       },
       (err: any) => SimpleMsgModal({ icon: 'warning', title: `로그인(${err.status})`, text: `${err.message}` })

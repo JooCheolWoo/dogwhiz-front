@@ -23,7 +23,9 @@ export default function HeaderTop() {
           >
             로그인
           </button>
-          <button className="hover:text-orange-500 transition duration-300">
+          <button 
+            onClick={() => Router.push('/members/register')}
+            className="hover:text-orange-500 transition duration-300">
             회원가입
           </button>
         </div>

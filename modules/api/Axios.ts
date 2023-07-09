@@ -7,6 +7,10 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use(
     function (config) {
+        const accessToken = localStorage.getItem('loginInfo');
+        if (accessToken) {
+            config.headers.Authorization = 'Bearer ' + accessToken;
+        }
         return config;
     },
     function (error) {

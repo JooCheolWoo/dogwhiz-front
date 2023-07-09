@@ -4,6 +4,16 @@ import { useState, useEffect } from "react";
 
 export default function HeaderTop() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const [ LoggedIn, setLoggedIn ] = useState(false);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      setLoggedIn(true);
+    }
+    const LoggedIn = localStorage.getItem('LoggedIn');
+    setLoggedIn(LoggedIn == 'true');
+  }, [isLoggedIn, LoggedIn])
+  
 
   const links = [
     { href: "#", text: "즐겨찾기" },
@@ -15,7 +25,7 @@ export default function HeaderTop() {
 
   return (
     <div className="flex justify-end py-2 border-b border-b-orange-100 select-none">
-      {!isLoggedIn && (
+      {!LoggedIn && (
         <div className="flex flex-row text-gray-600 mx-48 text-xs font-bold space-x-2">
           <button
             onClick={() => Router.push('/members/login')}
@@ -30,7 +40,7 @@ export default function HeaderTop() {
           </button>
         </div>
       )}
-      {isLoggedIn && (
+      {LoggedIn && (
         <ul className="flex flex-row text-gray-600 mx-48 text-xs font-bold">
           {links.map((link, i) => (
             <li key={i}>

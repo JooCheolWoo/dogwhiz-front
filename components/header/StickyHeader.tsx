@@ -3,6 +3,7 @@ import HoverDownMenu from '../menu/HoverDownMenu';
 import { useAuth } from '@/modules/context/AuthContext';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { decryptData } from '@/modules/cryptoUtils';
 
 export default function StickyHeader() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
@@ -11,15 +12,24 @@ export default function StickyHeader() {
   const [ LoggedIn, setLoggedIn ] = useState(false);
 
   useEffect(() => {
-    const loginInfo = localStorage.getItem('loginInfo');
+    const encodedInfo = localStorage.getItem('loginInfo');
+    let loginInfo = null;
+
+    if (encodedInfo) {
+      loginInfo = decryptData(encodedInfo);
+    }
+
     const LoggedIn =  localStorage.getItem('LoggedIn');
     if ( LoggedIn && loginInfo) {
+
       setLoggedIn(LoggedIn == 'true');
-      const nickname = JSON.parse(loginInfo).nickname;
+      const nickname = loginInfo.nickname;
       setNickname(nickname);
-      if (JSON.parse(loginInfo).memberImage !== null) {
-        const profile = JSON.parse(loginInfo).memberImage.url;
+      if (loginInfo.memberImage != null) {
+        const profile = loginInfo.memberImage.url;
         setProfile(profile);
+      } else {
+        setProfile("/images/logo.png");        
       }
     }
   }, [isLoggedIn, LoggedIn]);

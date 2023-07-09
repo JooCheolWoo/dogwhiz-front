@@ -6,6 +6,7 @@ import Link from 'next/link';
 import * as Yup from 'yup';
 import SimpleMsgModal from './../../modals/SimpleMsgModal';
 import Router from 'next/router';
+import { encryptData } from '@/modules/cryptoUtils';
 
 type Member = {
   email: string;
@@ -29,7 +30,7 @@ export const LoginForm = () => {
       },
       (res: any) => {
         setIsLoggedIn(true);
-        localStorage.setItem('loginInfo', JSON.stringify(res.data));
+        localStorage.setItem('loginInfo', encryptData(res.data));
         localStorage.setItem('LoggedIn', `true`);
         Router.replace('/');
       },

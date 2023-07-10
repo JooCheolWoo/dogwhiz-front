@@ -1,4 +1,5 @@
 import axios from "axios";
+import { decryptData } from "../cryptoUtils";
 
 const Axios = axios.create({
     baseURL: "https://dev.api.hellodogwhiz.com/api/v1",
@@ -7,8 +8,10 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use(
     function (config) {
-        const accessToken = localStorage.getItem('loginInfo');
-        if (accessToken) {
+        const encodedInfo = localStorage.getItem('loginInfo');
+        if (encodedInfo) {
+            const decodedInfo = decryptData(encodedInfo);
+            const accessToken = decodedInfo.accessToken;
             config.headers.Authorization = 'Bearer ' + accessToken;
         }
         return config;

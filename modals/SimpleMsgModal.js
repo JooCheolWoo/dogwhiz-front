@@ -1,17 +1,43 @@
 import Swal from "sweetalert2";
+import { ErrorMessage } from 'formik';
 
-export default function SimpleMsgModal({ icon, title, text }) {
-  const icons = ["success", "error", "warning", "info", "question"];
+const icons = ["success", "error", "warning", "info", "question"];
 
-  if (!icons.includes(icon)) {
-    console.error(`Invalid icon: ${icon}`);
-    return;
-  }
+export function ErrorMsg({ title, text }) {
 
   return Swal.fire({
-    icon: `${icon}`,
+    icon: `error`,
     title: `${title}`,
     text: `${text}`,
-    footer: `<a href="#>관리자에게 문의하기</a>`
+    footer: `<a href="#">관리자에게 문의하기</a>`
   });
+}
+
+export function WarningMsg({ title, text }) {
+
+  return Swal.fire({
+    icon: `warning`,
+    title: `${title}`,
+    text: `${text}`,
+    footer: `<a href="#">관리자에게 문의하기</a>`
+  });
+}
+
+export function SuccessMsg({ title, text }) {
+
+  return Swal.fire({
+    icon: `success`,
+    title: `${title}`,
+    text: `${text}`,
+  });
+}
+
+export function ConfirmOrCancelMsg ({ icon, title, text }) {
+  return Swal.fire({
+  icon: `${icon}`,
+    title: `${title}`,
+    text: `${text}`,
+    showConfirmButton: true,
+    showCancelButton: true,
+  });  
 }

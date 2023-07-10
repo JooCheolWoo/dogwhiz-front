@@ -1,38 +1,32 @@
 import Link from 'next/link';
 import HoverDownMenu from '../menu/HoverDownMenu';
-import { useAuth } from '@/modules/context/AuthContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Image from 'next/image';
-import { decryptData } from '@/modules/cryptoUtils';
+import { ConfirmOrCancelMsg } from './../../modals/SimpleMsgModal';
+import { useLoginContext } from '@/modules/context/IsLoginContext';
 
 export default function StickyHeader() {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLogin, setIsLogin, loginInfo, setLoginInfo } = useLoginContext();
   const [nickname, setNickname] = useState('');
-  const [profile, setProfile] = useState('/public/images/logo.png');
-  const [ LoggedIn, setLoggedIn ] = useState(false);
+  const [profile, setProfile] = useState('/images/logo.png');
 
   useEffect(() => {
-    const encodedInfo = localStorage.getItem('loginInfo');
-    let loginInfo = null;
-
-    if (encodedInfo) {
-      loginInfo = decryptData(encodedInfo);
+    if (isLogin) {
+      loginInfo? setNickname(loginInfo?.nickname) : null;
+      loginInfo? setProfile(loginInfo.memberImageUrl) : setProfile('/images/logo.png');
+      loginInfo? console.log(loginInfo?.nickname) : null;
     }
+  }, [isLogin, nickname, profile]);
 
-    const LoggedIn =  localStorage.getItem('LoggedIn');
-    if ( LoggedIn && loginInfo) {
-
-      setLoggedIn(LoggedIn == 'true');
-      const nickname = loginInfo.nickname;
-      setNickname(nickname);
-      if (loginInfo.memberImage != null) {
-        const profile = loginInfo.memberImage.url;
-        setProfile(profile);
-      } else {
-        setProfile("/images/logo.png");        
+  const logoutHandler = () => {
+    ConfirmOrCancelMsg({ icon: 'warning', title: '로그아웃', text: '정말 로그아웃 하시겠습니까?' }).then((res) => {
+      if (res.isConfirmed) {
+        setIsLogin(false);
+        setLoginInfo(null);
+        localStorage.clear();
       }
-    }
-  }, [isLoggedIn, LoggedIn]);
+    });
+  };
 
   return (
     <div className="bg-orange-50 border-y border-orange-100 font-bold text-slate-600 select-none">
@@ -53,10 +47,23 @@ export default function StickyHeader() {
           <Menu title="병원검색" goto="#" />
         </ul>
         <div>
-          { LoggedIn && (
-            <div  className="flex felx-raw items-center space-x-3">
-              <Image src={profile} width={45} height={45} alt={'profile image'} className='w-[45px] h-[45px] rounded-[50%]' />
+          {isLogin && (
+            <div className="flex felx-raw items-center space-x-3">
+              <Image
+                src={profile}
+                width={45}
+                height={45}
+                alt={'profile image'}
+                className="w-[45px] h-[45px] rounded-[50%]"
+              />
               <div>{nickname}</div>
+              <button
+                type="button"
+                onClick={logoutHandler}
+                className="bg-stone-300 rounded-lg px-1 hover:ring-2 ring-stone-500 transition duration-300"
+              >
+                로그아웃
+              </button>
             </div>
           )}
         </div>

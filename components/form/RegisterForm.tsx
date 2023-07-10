@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 import { Formik, FormikProps, Field, Form, ErrorMessage } from 'formik';
 import Image from 'next/image';
 import * as Yup from 'yup';
-import SimpleMsgModal from './../../modals/SimpleMsgModal';
+import { ErrorMsg, WarningMsg, SuccessMsg } from './../../modals/SimpleMsgModal';
 import Router from 'next/router';
 import Link from 'next/link';
-import { AxiosTryCatch } from '@/modules/api/AxiosTryCatch';
+import { AxiosTryCatch } from '@/modules/api/useAxiosSWR';
 import { type } from 'os';
 
 // Input 받는 자료 형식 정의
@@ -111,9 +111,9 @@ export default function RegisterForm() {
       },
       (res: any) => {
         Router.replace('/');
-        SimpleMsgModal({ icon: 'success', title: `환영합니다`, text: `등록하신 이메일로 인증메일이 전송되었습니다` });
+        SuccessMsg({ title: `환영합니다`, text: `등록하신 이메일로 인증메일이 전송되었습니다` });
       },
-      (err: any) => SimpleMsgModal({ icon: 'warning', title: `회원가입(${err.status})`, text: `${err.message}` })
+      (err: any) => ErrorMsg({ title: `회원가입(${err.status})`, text: `${err.message}` })
     );
   };
 
@@ -128,15 +128,13 @@ export default function RegisterForm() {
       validationSchema={ValidationSchema}
       onSubmit={(data: Member, { setSubmitting }) => {
         if (!ableEmail) {
-          SimpleMsgModal({
-            icon: 'warning',
+          WarningMsg({
             title: 'Oops...',
             text: '이메일 중복확인을 해주세요.',
           });
           setSubmitting(false);
         } else if (!ableNickname) {
-          SimpleMsgModal({
-            icon: 'warning',
+          WarningMsg({
             title: 'Oops...',
             text: '닉네임 중복확인을 해주세요.',
           });

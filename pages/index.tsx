@@ -1,5 +1,5 @@
 import { MainBanner } from '@/components/banner/MainBanner';
-import { AxiosTryCatch } from '@/modules/api/AxiosTryCatch';
+import { useAxiosSWR } from '@/modules/api/useAxiosSWR';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
@@ -7,19 +7,14 @@ export default function Home() {
 
   const [banners, setBanners] = useState([]);
 
+  const { res } = useAxiosSWR('/banners', { method: 'get' });
+
   useEffect(() => {
-    AxiosTryCatch(
-      {
-        url: '/banners',
-      },
-      (res : any) => {
-        setBanners(res.data)
-      },
-      (err : any) => {
-        console.log(err.data);
-      }
-    );
-  }, []);
+    if (res?.success === true) {
+      setBanners(res.data);
+    }
+  }, [])
+
 
   return (
     <div className="w-full">

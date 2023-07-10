@@ -12,14 +12,14 @@ export default function FooterMiddle() {
   ];
 
   return (
-    <div className="bg-orange-100 text-stone-600 border-y border-orange-100 font-bold">
+    <div className="bg-[#FFF5E4] text-stone-600 font-bold text-sm">
       <div className="py-1 mx-48">
         <ul className="flex flex-raw justify-center items-center space-x-8">
           {links.map((link, i) => (
             <li key={i}>
               <a
                 href={link.href}
-                className="hover:text-orange-500 transition duration-300"
+                className="hover:text-[#FF9494] transition duration-300"
               >
                 {link.text}
               </a>

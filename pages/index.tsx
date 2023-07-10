@@ -1,20 +1,17 @@
 import { MainBanner } from '@/components/banner/MainBanner';
 import { useAxiosSWR } from '@/modules/api/useAxiosSWR';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const { res } = useAxiosSWR('/banners', { method: 'get' }, { refreshInterval: false, revalidateOnFocus: false });
 
-  const [banners, setBanners] = useState([]);
-
-  const { res } = useAxiosSWR('/banners', { method: 'get' });
+  const [banners, setBanners] = useState(res?.data || []);
 
   useEffect(() => {
-    if (res?.success === true) {
+    if (res?.success) {
       setBanners(res.data);
     }
-  }, [])
-
+  }, [res])
 
   return (
     <div className="w-full">

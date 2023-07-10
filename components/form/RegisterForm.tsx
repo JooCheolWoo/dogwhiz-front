@@ -5,8 +5,7 @@ import * as Yup from 'yup';
 import { ErrorMsg, WarningMsg, SuccessMsg } from './../../modals/SimpleMsgModal';
 import Router from 'next/router';
 import Link from 'next/link';
-import { AxiosTryCatch } from '@/modules/api/useAxiosSWR';
-import { type } from 'os';
+import { AxiosTryCatch } from '@/modules/api/AxiosTryCatch';
 
 // Input 받는 자료 형식 정의
 interface Member {

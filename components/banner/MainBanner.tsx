@@ -45,7 +45,7 @@ export const MainBanner: React.FC<BannerProps> = ({ banners }) => {
 
   return (
     <div className="select-none">
-      <div className="relative bg-orange-200 w-screen overflow-hidden">
+      <div className="relative w-screen overflow-hidden">
         {banners.map((slide, index) => (
           <div
             className={
@@ -67,24 +67,24 @@ export const MainBanner: React.FC<BannerProps> = ({ banners }) => {
               className="absolute z-10 top-1/2 left-12 p-2 rounded-full bg-slate-50 opacity-50 hover:opacity-80 text-4xl"
               onClick={prevSlide}
             >
-              <FcPrevious />
+              <FcPrevious color="#FF9494" />
             </button>
             <button
               className="absolute z-10 top-1/2 right-12 p-2 rounded-full bg-slate-50 opacity-50 hover:opacity-80 text-4xl"
               onClick={nextSlide}
             >
-              <FcNext />
+              <FcNext color="#FF9494" />
             </button>
           </>
         )}
       </div>
-      <div className="w-full p-2 flex justify-center space-x-4 border-y border-orange-100">
+      <div className="w-full py-2 flex justify-center space-x-6">
         {banners.map((slide, index) => (
           <button
             key={index}
             onClick={() => selectSlide(index)}
             className={
-              (index === current ? 'text-pink-500 font-bold border-b-pink-500 border-b-2' : 'text-black border-b-2')
+              (index === current ? 'text-[#FF9494] font-bold border-b-[#FF9494] border-b-2' : 'text-gray-500 font-bold border-b-2')
             }
           >
             {slide.title}

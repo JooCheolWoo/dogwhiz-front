@@ -6,7 +6,6 @@ import { BiCoffeeTogo } from "react-icons/bi"
 import { useState } from "react";
 
 export default function FooterTop() {
-  const [hovered, setHovered] = useState(false);
   const links = [
     { href: "#", text: "성공하는 습관 : 5분 일기" },
     { href: "#", text: "수강신청&티켓팅 서버시간" },
@@ -16,7 +15,7 @@ export default function FooterTop() {
   ];
 
   return (
-    <div className="w-full border-t border-orange-100 h-60 py-4">
+    <div className="w-full h-60 py-4">
       <div className="flex flex-row justify-around mx-48">
         <div className="flex flex-col">
           <span className="font-bold">Contact us</span>
@@ -31,7 +30,6 @@ export default function FooterTop() {
             <span>가능한 빠른 시일 내 답장드리겠습니다.</span>
           </div>
         </div>
-        <line className="border-x-2 border-orange-100"/>
         <div className="flex flex-col">
           <span className="font-bold">Buy Me a Coffee</span>
           <div className="flex flex-row space-x-2 items-center py-6">
@@ -39,14 +37,10 @@ export default function FooterTop() {
             <Link
               href="https://www.buymeacoffee.com/galaxypoby"
               target="_blank"
-              className="font-bold text-lg hover:text-orange-500 transition duration-300"
-              onMouseEnter={() => setHovered(true)}
-              onMouseLeave={() => setHovered(false)}
+              className="font-bold text-lg hover:text-[#FF9494] transition duration-300"
             >
               커피 사주기
             </Link>
-            {hovered && <span className="text-xs">감사합니다</span>}
-            {hovered && <BsBalloonHeartFill className=" text-red-500" />}
           </div>
           <div className="flex flex-col space-y-1 text-sm">
             <span className="font-bold">후원 감사합니다</span>
@@ -54,7 +48,6 @@ export default function FooterTop() {
             <span>더 좋은 서비스를 위해 노력하겠습니다.</span>
           </div>
         </div>
-        <line className="border-x-2 border-orange-100"/>
         <div className="flex flex-col">
           <span className="font-bold">Other Sites</span>
           <ul className="flex flex-col space-y-2 py-6">

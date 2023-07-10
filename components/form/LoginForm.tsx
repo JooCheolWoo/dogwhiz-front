@@ -3,10 +3,11 @@ import { useAxiosSWR } from '@/modules/api/useAxiosSWR';
 import { ErrorMessage, Field, Form, Formik, FormikProps } from 'formik';
 import Link from 'next/link';
 import * as Yup from 'yup';
-import { ErrorMsg } from './../../modals/SimpleMsgModal';
+import { ErrorMsg, WarningMsg } from './../../modals/SimpleMsgModal';
 import Router from 'next/router';
 import { encryptData } from '@/modules/cryptoUtils';
 import { useLoginContext } from '@/modules/context/IsLoginContext';
+import { AxiosTryCatch } from '@/modules/api/AxiosTryCatch';
 
 type Member = {
   email: string;
@@ -20,23 +21,23 @@ const ValidationSchema = Yup.object().shape({
 
 export const LoginForm = () => {
   const { setIsLogin } = useLoginContext();
-  const { res, isLoading, isError } = useAxiosSWR('/login', { method: 'post'});
 
-  
-  const handleSubmit = async (values: Member) => {
-    const result = await res({data: values});
 
-    if (res?.success === true) {
+  const handleSubmit = (values: Member) => {
+    AxiosTryCatch({
+      url: '/login',
+      method: 'post',
+      data: values
+    }, (successRes : any) => {
       setIsLogin(true);
-      localStorage.setItem('loginInfo', res.data);
+      localStorage.setItem('loginInfo', encryptData(successRes.data));
+      Router.push('/');
+    }, (failRes : any) => {
+      setIsLogin(false);
+      localStorage.clear();
+      WarningMsg({ title: `로그인 실패(${failRes.status})`, text: failRes.message });
+    })
 
-    } else if (res?.success === false) {
-      ErrorMsg({ title: `로그인 에러(${res.data.status})`, text: res.data.message })
-    }
-
-    if (isError) {
-      ErrorMsg({ title: `Error`, text:isError })
-    }
   };
 
   return (

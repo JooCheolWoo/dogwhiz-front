@@ -1,27 +1,19 @@
-import HeaderTop from './header/HeaderTop';
-import HeaderMiddle from './header/HeaderMiddle';
-import StickyHeader from './header/StickyHeader';
-import { ReactNode } from 'react';
 import FooterTop from './footer/FooterTop';
 import FooterMiddle from './footer/FooterMiddle';
 import FooterBottom from './footer/FooterBottom';
+import Header from './header/Header';
+import Footer from './footer/Footer';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => (
-  <>
-    <HeaderTop />
-    <HeaderMiddle />
-    <div className="sticky top-0 z-10">
-      <StickyHeader />
-    </div>
+  <div className="nanum_gothic">
+    <Header />
     {children}
-    <FooterTop />
-    <FooterMiddle />
-    <FooterBottom />
-  </>
+    <Footer />
+  </div>
 );
 
 export default Layout;

@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React, { useState, useEffect, useCallback } from 'react';
-import { FcNext } from 'react-icons/fc'
-import { FcPrevious } from 'react-icons/fc';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 type Banner = {
   id: number;
@@ -56,7 +55,11 @@ export const MainBanner: React.FC<BannerProps> = ({ banners }) => {
           >
             {index === current && (
               <Link href={slide.url} target="_blank" rel="noopener noreferrer">
-                <img src={slide.bannerFile.url} alt={slide.title + ' image'} className="object-cover w-full h-full min-h-[300px]" />
+                <img
+                  src={slide.bannerFile.url}
+                  alt={slide.title + ' image'}
+                  className="object-cover w-full h-full min-h-[300px]"
+                />
               </Link>
             )}
           </div>
@@ -67,13 +70,17 @@ export const MainBanner: React.FC<BannerProps> = ({ banners }) => {
               className="absolute z-10 top-1/2 left-12 p-2 rounded-full bg-slate-50 opacity-50 hover:opacity-80 text-4xl"
               onClick={prevSlide}
             >
-              <FcPrevious color="#FF9494" />
+              <span style={{ color: '#FF9494' }}>
+                <FaArrowLeft />
+              </span>
             </button>
             <button
               className="absolute z-10 top-1/2 right-12 p-2 rounded-full bg-slate-50 opacity-50 hover:opacity-80 text-4xl"
               onClick={nextSlide}
             >
-              <FcNext color="#FF9494" />
+              <span style={{ color: '#FF9494' }}>
+                <FaArrowRight />
+              </span>
             </button>
           </>
         )}
@@ -84,7 +91,9 @@ export const MainBanner: React.FC<BannerProps> = ({ banners }) => {
             key={index}
             onClick={() => selectSlide(index)}
             className={
-              (index === current ? 'text-[#FF9494] font-bold border-b-[#FF9494] border-b-2' : 'text-gray-500 font-bold border-b-2')
+              index === current
+                ? 'text-[#FF9494] font-bold border-b-[#FF9494] border-b-2'
+                : 'text-gray-500 font-bold border-b-2'
             }
           >
             {slide.title}

@@ -1,6 +1,6 @@
 import { useLoginContext } from '@/modules/context/IsLoginContext';
 import Router from 'next/router';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default function HeaderTop() {
   const { isLogin } = useLoginContext();

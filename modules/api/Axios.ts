@@ -11,7 +11,7 @@ Axios.interceptors.request.use(
         const encodedInfo = localStorage.getItem('loginInfo');
         if (encodedInfo) {
             const decodedInfo = decryptData(encodedInfo);
-            const accessToken = decodedInfo.accessToken;
+            const accessToken = decodedInfo.tokenInfo.accessToken;
             config.headers.Authorization = 'Bearer ' + accessToken;
         }
         return config;

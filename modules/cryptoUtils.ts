@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import LoginDto from "@/model/LoginDto";
+import LoginDto from "@/model/Member";
 
 const SECRET_KEY = 'secret_key';
 

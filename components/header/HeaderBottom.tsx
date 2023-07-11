@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import HeaderOpenMenu from '../menu/HeaderOpenMenu';
 
 export default function HeaderBottom() {
   return (
@@ -6,11 +7,11 @@ export default function HeaderBottom() {
       <div className="flex justify-between mx-48">
         <nav className="flex items-center space-x-8">
           <Menu title="홈" push="/" />
-          <Menu title="공지사항" push="#" />
-          <Menu title="커뮤니티" push="#" />
-          <Menu title="산책친구" push="#" />
-          <Menu title="개과사전" push="#" />
-          <Menu title="동반여행" push="#" />
+          <Menu title="공지사항" push="/notice" />
+          <HeaderOpenMenu title='커뮤니티' items={comunityItems} />
+          <HeaderOpenMenu title='산책친구' items={walkItems} />
+          <HeaderOpenMenu title='개과사전' items={dictionaryItems} />
+          <HeaderOpenMenu title='동반여행' items={travelItems} />
           <Menu title="병원검색" push="#" />
         </nav>
       </div>
@@ -27,29 +28,29 @@ function Menu({ title, push }: { title: string; push: string }) {
 }
 
 const comunityItems = [
-  { title: '홈', link: '#' },
-  { title: '인기글', link: '#' },
-  { title: '일상', link: '#' },
-  { title: '재미', link: '#' },
-  { title: '질문', link: '#' },
-  { title: '정보공유', link: '#' },
+  { title: '전체글', push: '#' },
+  { title: '인기글', push: '#' },
+  { title: '일상', push: '#' },
+  { title: '재미', push: '#' },
+  { title: '질문', push: '#' },
+  { title: '정보공유', push: '#' },
 ];
 
 const walkItems = [
-  { title: '산책기록', link: '#' },
-  { title: '경로공유', link: '#' },
-  { title: '친구찾기', link: '#' },
+  { title: '산책기록', push: '#' },
+  { title: '경로공유', push: '#' },
+  { title: '친구찾기', push: '#' },
 ];
 
 const dictionaryItems = [
-  { title: '상식', link: '#' },
-  { title: '건강', link: '#' },
-  { title: '견종백과', link: '#' },
+  { title: '상식', push: '#' },
+  { title: '건강', push: '#' },
+  { title: '견종백과', push: '#' },
 ];
 
 const travelItems = [
-  { title: '카페', link: '#' },
-  { title: '음식점', link: '#' },
-  { title: '운동장', link: '#' },
-  { title: '여행코스', link: '#' },
+  { title: '카페', push: '#' },
+  { title: '음식점', push: '#' },
+  { title: '운동장', push: '#' },
+  { title: '여행코스', push: '#' },
 ];

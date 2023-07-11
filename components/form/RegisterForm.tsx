@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Formik, FormikProps, Field, Form, ErrorMessage } from 'formik';
 import Image from 'next/image';
 import * as Yup from 'yup';
@@ -33,6 +33,12 @@ const ValidationSchema = Yup.object().shape({
 export default function RegisterForm() {
   const [image, setImage] = useState('/images/blank.png');
   const [sendFile, setSendFile] = useState<FileList | null>(null);
+
+  useEffect(() => {
+    if (!sendFile?.[0]) {
+      setImage('/images/blank.png');
+    }
+  }, [sendFile, image]);
 
   const handleImage = (e: any) => {
     // 내가 받을 파일은 하나기 때문에 index 0값의 이미지를 가짐
@@ -156,7 +162,7 @@ export default function RegisterForm() {
               <div className="flex flex-col space-y-2">
                 <label className="text-xs font-bold">이메일</label>
                 <div className="flex flex-col h-10">
-                  <div className="flex flex-raw">
+                  <div className="flex space-x-2">
                     <Field
                       name="email"
                       type="email"
@@ -172,10 +178,10 @@ export default function RegisterForm() {
                       type="button"
                       onClick={() => emailCheck(values.email)}
                       disabled={(errors.email && touched.email) || undefined}
-                      className={`p-2 rounded-lg transition duration-300 ml-2 w-44 ${
+                      className={`p-2 rounded-lg transition duration-300 w-44 font-semibold ${
                         !errors.email && touched.email
-                          ? 'bg-orange-500 hover:bg-orange-700'
-                          : 'bg-gray-500 cursor-not-allowed'
+                          ? 'bg-[#FFD1D1] hover:bg-[#FF9494]'
+                          : 'bg-gray-400 cursor-not-allowed'
                       }`}
                     >
                       중복확인
@@ -232,10 +238,10 @@ export default function RegisterForm() {
                         nicknameCheck(values.nickname);
                       }}
                       disabled={(errors.nickname && touched.nickname) || undefined}
-                      className={`p-2 rounded-lg transition duration-300 ml-2 w-44 ${
+                      className={`p-2 rounded-lg transition duration-300 ml-2 w-44 font-semibold ${
                         !errors.nickname && touched.nickname
-                          ? 'bg-orange-500 hover:bg-orange-700'
-                          : 'bg-gray-500 cursor-not-allowed'
+                          ? 'bg-[#FFD1D1] hover:bg-[#FF9494]'
+                          : 'bg-gray-400 cursor-not-allowed'
                       }`}
                     >
                       중복확인
@@ -258,17 +264,28 @@ export default function RegisterForm() {
                       width={200}
                       height={200}
                       alt="profile image"
-                      className="w-[200px] h-[200px] rounded-[50%] object-cover border-2 border-orange-400 ring-4 ring-orange-200"
+                      className="w-[200px] h-[200px] object-cover border-2 border-[#FFD1D1] ring-4 ring-[#FFE3E1]"
                     />
                   </label>
-                  <div className="flex flex-col items-center space-y-2">
+                  <div className="flex flex-col items-center space-y-4">
                     <label
                       htmlFor="file"
-                      className="p-2 bg-orange-300 rounded-lg hover:bg-orange-500 hover:ring-4 ring-orange-100 transition duration-300 font-bold text-sm"
+                      className="p-2 bg-[#FFD1D1] rounded-lg hover:bg-[#FF9494] hover:ring-4 ring-[#FFE3E1] hover:cursor-pointer transition duration-300 font-bold text-sm"
                     >
                       이미지 선택
                     </label>
-                    <span className="text-center text-sm">선택된 이미지가 없습니다</span>
+                    {sendFile?.[0] ? (
+                      <span
+                        className="text-center text-sm w-48 bg-slate-100 p-1 rounded-lg"
+                        style={{ wordWrap: 'break-word' }}
+                      >
+                        {sendFile[0].name.length > 50 ? sendFile[0].name.substring(0, 50) + '...' : sendFile[0].name}
+                      </span>
+                    ) : (
+                      <span className="text-center text-sm w-48 bg-slate-100 p-1 rounded-lg">
+                        선택된 이미지가 없습니다.
+                      </span>
+                    )}
                   </div>
                 </div>
                 <input
@@ -285,14 +302,14 @@ export default function RegisterForm() {
               </div>
               <div className="flex flex-col justify-center items-center">
                 <button
-                  className="p-2 bg-orange-500 rounded-lg w-40 hover:bg-orange-700 transition duration-300 my-10 mx-4 text-blueGray-600 font-bold"
+                  className="p-2 w-40 bg-[#FFD1D1] rounded-lg hover:bg-[#FF9494] hover:ring-4 ring-[#FFE3E1] transition duration-300 my-10 mx-4 text-blueGray-600 font-bold"
                   type="submit"
                   disabled={isSubmitting}
                 >
                   회원가입
                 </button>
-                <Link href="/login" className="text-blue-500">
-                  로그인하러 가기
+                <Link href="/members/login" className="text-blue-500 hover:font-semibold">
+                  이미 계정이 있으신가요?
                 </Link>
               </div>
             </Form>

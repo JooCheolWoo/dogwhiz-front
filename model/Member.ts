@@ -1,17 +1,19 @@
-type LoginDto = {
+export type LoginDto = {
   id: number;
   email: string;
   nickname: string;
-  roles: any;
+  imageUrl: string;
+  emailAuth: boolean;
   loginIp: string;
   lastLoginDate: Date;
   updatePwdDate: Date;
-  emailAuth: boolean;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
-  memberImage: any;
-  accessToken: string;
+  tokenInfo: TokenInfo;
 };
 
-export default LoginDto;
+type TokenInfo = {
+  accessToken: string,
+  expiredDate: number
+}

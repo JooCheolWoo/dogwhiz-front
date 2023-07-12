@@ -6,6 +6,7 @@ import { FaSearch } from 'react-icons/fa';
 import { MdOutlineLogin, MdOutlineLogout } from 'react-icons/md';
 import { useLoginContext } from '@/modules/context/IsLoginContext';
 import { useEffect } from 'react';
+import { ConfirmOrCancelMsg } from '@/modals/SimpleMsgModal';
 
 const HeaderMiddle: React.FC = () => {
   const { isLogin, setIsLogin } = useLoginContext();
@@ -13,8 +14,13 @@ const HeaderMiddle: React.FC = () => {
   useEffect(() => {}, [isLogin]);
 
   const logout = () => {
-    localStorage.clear();
-    setIsLogin(false);
+    ConfirmOrCancelMsg( { icon : 'warning', title : '로그아웃', text : '정말 로그아웃 하시겠습니까?'})
+    .then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear();
+        setIsLogin(false);
+      }
+    })
   }
 
 

@@ -28,7 +28,7 @@ function Menu({ title, push }: { title: string; push: string }) {
 }
 
 const comunityItems = [
-  { title: '전체글', push: '#' },
+  { title: '전체글', push: '/community' },
   { title: '인기글', push: '#' },
   { title: '일상', push: '#' },
   { title: '재미', push: '#' },

@@ -4,6 +4,8 @@ export type LoginDto = {
   nickname: string;
   imageUrl: string;
   emailAuth: boolean;
+  roles: Array<Role>;
+  status: string;
   loginIp: string;
   lastLoginDate: Date;
   updatePwdDate: Date;
@@ -16,4 +18,9 @@ export type LoginDto = {
 type TokenInfo = {
   accessToken: string,
   expiredDate: number
+}
+
+type Role = {
+  id: number,
+  role: string
 }

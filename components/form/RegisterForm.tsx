@@ -264,7 +264,7 @@ export default function RegisterForm() {
                       width={200}
                       height={200}
                       alt="profile image"
-                      className="w-[200px] h-[200px] object-cover border-2 border-[#FFD1D1] ring-4 ring-[#FFE3E1]"
+                      className="w-[200px] h-[200px] rounded-[50%] object-cover border-2 border-[#FFD1D1] ring-4 ring-[#FFE3E1]"
                     />
                   </label>
                   <div className="flex flex-col items-center space-y-4">

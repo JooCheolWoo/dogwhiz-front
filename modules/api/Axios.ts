@@ -26,7 +26,7 @@ Axios.interceptors.response.use(
         return response;
     },
     (error) => {
-        return Promise.reject(`잠시 후 다시 이용해 주세요.(${error.code})`);
+        return Promise.reject(`잠시 후 다시 이용해 주세요.(${error})`);
     }
 )
 

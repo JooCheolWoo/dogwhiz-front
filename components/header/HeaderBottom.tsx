@@ -3,8 +3,8 @@ import HeaderOpenMenu from '../menu/HeaderOpenMenu';
 
 export default function HeaderBottom() {
   return (
-    <div className="select-none bg-[#FFF5E4]">
-      <div className="flex justify-between mx-48">
+    <div className="select-none border-y border-base-normal">
+      <div className="flex justify-between mx-res">
         <nav className="flex items-center space-x-8">
           <Menu title="홈" push="/" />
           <Menu title="공지사항" push="/notice" />
@@ -21,7 +21,7 @@ export default function HeaderBottom() {
 
 function Menu({ title, push }: { title: string; push: string }) {
   return (
-    <Link href={push} className="px-2 py-1 text-gray-700 hover:text-[#FF9494] transition duration-300 font-semibold text-lg gaegu">
+    <Link href={push} className="px-2 py-1 text-gray-700 hover:text-base-hover transition duration-300 font-semibold text-lg gaegu">
       {title}
     </Link>
   );

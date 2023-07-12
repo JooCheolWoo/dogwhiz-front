@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind variants;
 
 
 html,
@@ -9,4 +10,14 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+@layer components {
+  .mx-res {
+    @apply 
+    mobile:mx-4 
+    tablet:mx-8
+    laptop:mx-20
+    desktop:mx-40
+  }
 }

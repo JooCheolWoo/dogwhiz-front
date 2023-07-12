@@ -44,7 +44,7 @@ export const MainBanner: React.FC<BannerProps> = ({ banners }) => {
 
   return (
     <div className="select-none">
-      <div className="relative w-screen overflow-hidden">
+      <div className="relative w-screen overflow-hidden shadow">
         {banners.map((slide, index) => (
           <div
             className={

@@ -58,7 +58,7 @@ export const MainBanner: React.FC<BannerProps> = ({ banners }) => {
                 <img
                   src={slide.bannerFile.url}
                   alt={slide.title + ' image'}
-                  className="object-cover w-full h-full min-h-[300px]"
+                  className="object-cover w-full h-full min-h-[350px]"
                 />
               </Link>
             )}

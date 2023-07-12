@@ -5,7 +5,7 @@ import logo from "@/public/images/logo.png"
 export default function FooterBottom() {
   return (
     <footer className="text-gray-600">
-      <div className="flex flex-row py-2 items-center xl:mx-48 mx-10">
+      <div className="flex flex-row py-2 items-center mx-res">
         <Link
           href="/"
           className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900"

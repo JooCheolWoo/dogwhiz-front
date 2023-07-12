@@ -3,7 +3,7 @@ import Router from 'next/router';
 
 export default function LoginPage() {
   return (
-    <div className="flex py-36 justify-center space-x-20">
+    <div className="flex items-center py-28 justify-center tablet:space-x-10 laptop:space-x-20">
       <LoginForm />
       <div className="space-y-12">
         <div className='space-y-4'>

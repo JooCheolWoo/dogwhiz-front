@@ -16,7 +16,7 @@ export default function FooterTop() {
 
   return (
     <div className="w-full h-60 py-4">
-      <div className="flex flex-row justify-around mx-48">
+      <div className="flex flex-row justify-around mx-res">
         <div className="flex flex-col">
           <span className="font-bold">Contact us</span>
           <div className="flex flex-row space-x-2 items-end py-6">

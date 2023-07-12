@@ -18,27 +18,26 @@ export default function HeaderTop() {
   return (
     <div className="flex justify-end py-2 select-none">
       {!isLogin && (
-        <div className="flex flex-row mx-48 text-xs font-bold space-x-2">
+        <div className="flex text-xs font-bold space-x-2 mx-res">
           <button
             onClick={() => Router.push('/members/login')}
-            className="hover:text-[#FF9494] transition duration-300"
+            className="hover:text-base-hover transition duration-300"
           >
             로그인
           </button>
           <button
             onClick={() => Router.push('/members/register')}
-            className="hover:text-[#FF9494] transition duration-300"
+            className="hover:text-base-hover transition duration-300"
           >
             회원가입
           </button>
         </div>
       )}
       {isLogin && (
-        <ul className="flex flex-row mx-48 text-xs font-bold">
+        <ul className="flex text-xs font-bold space-x-2 mx-res">
           {links.map((link, i) => (
             <li key={i}>
-              {i !== 0 && <Stripe />}
-              <a href={link.href} className="hover:text-orange-500 transition duration-300">
+              <a href={link.href} className="hover:text-base-hover transition duration-300">
                 {link.text}
               </a>
             </li>
@@ -47,8 +46,4 @@ export default function HeaderTop() {
       )}
     </div>
   );
-}
-
-function Stripe() {
-  return <span className="mx-2 text-gray-300">|</span>;
 }

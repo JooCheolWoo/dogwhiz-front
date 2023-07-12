@@ -13,7 +13,7 @@ export default function FooterMiddle() {
 
   return (
     <div className="bg-[#FFF5E4] text-stone-600 font-bold text-sm">
-      <div className="py-1 mx-48">
+      <div className="py-1 mx-res">
         <ul className="flex flex-raw justify-center items-center space-x-8">
           {links.map((link, i) => (
             <li key={i}>

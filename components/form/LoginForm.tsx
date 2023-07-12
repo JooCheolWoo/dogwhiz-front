@@ -56,7 +56,7 @@ export const LoginForm = () => {
       {(props: FormikProps<Member>) => {
         const { handleBlur, handleChange, isSubmitting } = props;
         return (
-          <Form className="flex flex-col space-y-12 w-full max-w-[450px]">
+          <Form className="flex flex-col space-y-12 w-full max-w-[400px]">
             <h2 className="text-stone-600 font-bold text-4xl text-center">로그인</h2>
             <div className="flex flex-col space-y-2">
               <label className="text-xs font-bold">이메일</label>

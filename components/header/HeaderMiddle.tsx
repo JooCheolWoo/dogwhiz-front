@@ -25,11 +25,11 @@ const HeaderMiddle: React.FC = () => {
 
 
   return (
-    <header className="py-1 select-none bg-white">
-      <div className="flex justify-between mx-48 font-bold">
+    <header className="py-1 select-none">
+      <div className="flex justify-between font-bold mx-res">
         <div className="items-center">
           <Link href="/" className="flex items-center space-x-1">
-            <div className="flex-col ml-4">
+            <div className="ml-4">
               <span className="text-center text-4xl caveat">DogWhiz</span>
             </div>
             <Image src={logo} alt="logo" width={55} />
@@ -39,16 +39,16 @@ const HeaderMiddle: React.FC = () => {
         <div className="flex justify-center items-center space-x-2">
           <input
             type="text"
-            className="w-96 px-4 py-1 bg-[#FFF5E4] rounded-full focus:ring-[#FF9494] focus:outline-none focus:ring focus:ring-opacity-40"
+            className="w-60 border-b-2 focus:border-base-hover transition duration-300 focus:outline-none"
             placeholder="검색어를 입력하세요."
           />
-          <button className="flex items-center justify-center w-8 h-8 text-white bg-[#FFD1D1] rounded-[50%] hover:bg-[#FF9494] transition duration-300">
+          <button className="flex items-center justify-center w-6 h-8 rounded-lg hover:bg-base-normal transition duration-300">
             <FaSearch />
           </button>
           {!isLogin && (
             <Link
               href="/members/login"
-              className="items-center p-1 py-2 rounded-lg text-2xl hover:bg-[#FFF5E4] transition duration-300"
+              className="flex items-center justify-center w-6 h-8 rounded-lg text-2xl hover:bg-base-normal transition duration-300"
             >
               <MdOutlineLogin />
             </Link>
@@ -56,7 +56,7 @@ const HeaderMiddle: React.FC = () => {
           {isLogin && (
             <button
               onClick={logout}
-              className="items-center p-1 py-2 rounded-lg text-2xl hover:bg-[#FFF5E4] transition duration-300"
+              className="flex items-center justify-center w-6 h-8 rounded-lg text-2xl hover:bg-base-normal transition duration-300"
             >
               <MdOutlineLogout />
             </button>

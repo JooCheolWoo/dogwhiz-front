@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import ReactDom, { createPortal } from "react-dom";
-import { Component } from "react-image-crop";
+
 
 const Portal = ({ children }: { children: ReactElement }) => {
   const [mounted, setMounted] = useState<boolean>(false);
@@ -12,7 +12,7 @@ const Portal = ({ children }: { children: ReactElement }) => {
 
   if (typeof window === "undefined") return <></>;
 
-  return mounted ? createPortal(children, document.getElementById("modal-root") as HTMLElement) : <></>;
+  return mounted ? createPortal(children, document.getElementById("portal") as HTMLElement) : <></>;
 };
 
 export default Portal;

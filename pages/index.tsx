@@ -16,12 +16,10 @@ export default function Home() {
   return (
     <div className="w-full">
       <MainBanner banners={banners} />
-      <div className="mx-res">
-        <div className="w-full h-screen bg-primary-lighit">
-          <h1>인덱스</h1>
+      <div className="mx-res py-4">
+        <div className="w-full h-screen bg-slate-400">
         </div>
         <div className="w-full h-screen bg-slate-600">
-          <h1>인덱스2</h1>
         </div>
       </div>
     </div>

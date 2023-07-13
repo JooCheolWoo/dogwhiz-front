@@ -89,7 +89,7 @@ export const LoginForm = () => {
             </div>
             <div className="flex justify-center">
               <button
-                className="p-2 w-40 bg-[#FFD1D1] rounded-lg hover:bg-[#FF9494] hover:ring-4 ring-[#FFE3E1] transition duration-300 font-bold"
+                className="w-40 hover_btn font-bold"
                 type="submit"
                 disabled={isSubmitting}
               >

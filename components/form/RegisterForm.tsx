@@ -17,7 +17,13 @@ interface Member {
 
 // Validation 설정
 const ValidationSchema = Yup.object().shape({
-  email: Yup.string().email('올바른 형식의 이메일을 입력해주세요.').required('이메일은 필수항목입니다.'),
+  email: Yup.string()
+    .email('올바른 형식의 이메일을 입력해주세요.')
+    .required('이메일은 필수항목입니다.')
+    .matches(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      '올바른 형식의 이메일을 입력해주세요.'
+    ),
   password: Yup.string()
     .required('비밀번호는 필수항목입니다.')
     .matches(
@@ -155,7 +161,7 @@ export default function RegisterForm() {
         const { values, touched, errors, handleBlur, handleChange, isSubmitting, setFieldValue } = props;
         return (
           <div className="flex justify-center">
-            <Form className="flex flex-col py-16 px-4 space-y-12 w-full max-w-[450px]">
+            <Form className="flex flex-col px-4 space-y-12 w-full max-w-[450px]">
               <div className="text-center">
                 <h2 className="text-stone-600 font-bold text-4xl">회원가입</h2>
               </div>
@@ -177,12 +183,8 @@ export default function RegisterForm() {
                     <button
                       type="button"
                       onClick={() => emailCheck(values.email)}
-                      disabled={(errors.email && touched.email) || undefined}
-                      className={`p-2 rounded-lg transition duration-300 w-44 font-semibold ${
-                        !errors.email && touched.email
-                          ? 'bg-[#FFD1D1] hover:bg-[#FF9494]'
-                          : 'bg-gray-400 cursor-not-allowed'
-                      }`}
+                      disabled={(errors.email && touched.email) || values.email.length == 0}
+                      className="w-44 hover_btn"
                     >
                       중복확인
                     </button>
@@ -204,6 +206,14 @@ export default function RegisterForm() {
                   onChange={handleChange}
                   className="p-2 bg-slate-100 rounded-lg"
                 />
+                {!errors.password && values.password.length == 0 && (
+                  <p className="text-xs text-blue-500 py-1 text-center">
+                    영소문자, 숫자, 특수문자 각 1개 이상 포함, 9자 이상이어야 합니다.
+                  </p>
+                )}
+                {!errors.password && values.password.length > 0 && (
+                  <p className="text-xs text-green-500 py-1 text-center">사용 가능한 비밀번호 입니다.</p>
+                )}
                 <ErrorMessage name="password" component="div" className="text-xs text-red-500 py-1 text-center" />
               </div>
               <div className="flex flex-col space-y-2 h-14">
@@ -220,7 +230,7 @@ export default function RegisterForm() {
               <div className="flex flex-col space-y-2 h-14">
                 <label className="text-xs font-bold">닉네임</label>
                 <div className="flex flex-col">
-                  <div className="flex flex-raw">
+                  <div className="flex space-x-2">
                     <Field
                       name="nickname"
                       type="nickname"
@@ -237,12 +247,8 @@ export default function RegisterForm() {
                       onClick={() => {
                         nicknameCheck(values.nickname);
                       }}
-                      disabled={(errors.nickname && touched.nickname) || undefined}
-                      className={`p-2 rounded-lg transition duration-300 ml-2 w-44 font-semibold ${
-                        !errors.nickname && touched.nickname
-                          ? 'bg-[#FFD1D1] hover:bg-[#FF9494]'
-                          : 'bg-gray-400 cursor-not-allowed'
-                      }`}
+                      disabled={(errors.nickname && touched.nickname) || values.nickname.length == 0}
+                      className="w-44 hover_btn"
                     >
                       중복확인
                     </button>
@@ -259,19 +265,15 @@ export default function RegisterForm() {
                 <label className="text-xs font-bold">프로필 사진</label>
                 <div className="flex flex-raw items-center justify-around">
                   <label htmlFor="file">
-                    <Image
+
+                    <img
                       src={image}
-                      width={200}
-                      height={200}
-                      alt="profile image"
-                      className="w-[200px] h-[200px] rounded-[50%] object-cover border-2 border-[#FFD1D1] ring-4 ring-[#FFE3E1]"
+                      className="w-[180px] h-[180px] object-cover rounded-lg shadow-lg"
+                      alt="Avatar"
                     />
                   </label>
                   <div className="flex flex-col items-center space-y-4">
-                    <label
-                      htmlFor="file"
-                      className="p-2 bg-[#FFD1D1] rounded-lg hover:bg-[#FF9494] hover:ring-4 ring-[#FFE3E1] hover:cursor-pointer transition duration-300 font-bold text-sm"
-                    >
+                    <label htmlFor="file" className="hover_btn hover:cursor-pointer text-sm">
                       이미지 선택
                     </label>
                     {sendFile?.[0] ? (
@@ -301,14 +303,10 @@ export default function RegisterForm() {
                 />
               </div>
               <div className="flex flex-col justify-center items-center">
-                <button
-                  className="p-2 w-40 bg-[#FFD1D1] rounded-lg hover:bg-[#FF9494] hover:ring-4 ring-[#FFE3E1] transition duration-300 my-10 mx-4 text-blueGray-600 font-bold"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
+                <button className="w-40 hover_btn" type="submit" disabled={isSubmitting}>
                   회원가입
                 </button>
-                <Link href="/members/login" className="text-blue-500 hover:font-semibold">
+                <Link href="/members/login" className="text-blue-500 py-8 hover:font-semibold">
                   이미 계정이 있으신가요?
                 </Link>
               </div>

@@ -8,6 +8,7 @@ import { useLoginContext } from '@/modules/context/IsLoginContext';
 import { useEffect } from 'react';
 import { ConfirmOrCancelMsg } from '@/modals/SimpleMsgModal';
 
+
 const HeaderMiddle: React.FC = () => {
   const { isLogin, setIsLogin } = useLoginContext();
 

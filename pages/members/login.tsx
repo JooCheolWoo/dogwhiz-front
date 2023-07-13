@@ -3,7 +3,7 @@ import Router from 'next/router';
 
 export default function LoginPage() {
   return (
-    <div className="flex items-center py-28 justify-center tablet:space-x-10 laptop:space-x-20">
+    <div className="flex items-center py-20 justify-center tablet:space-x-10 laptop:space-x-20">
       <LoginForm />
       <div className="space-y-12">
         <div className='space-y-4'>
@@ -26,7 +26,7 @@ export default function LoginPage() {
 function Btn({ title, push }: { title: string, push: string }) {
   return (
     <button
-      className="p-2 w-52 bg-[#FFD1D1] rounded-lg hover:bg-[#FF9494] hover:ring-4 ring-[#FFE3E1] transition duration-300 font-bold"
+      className="w-52 hover_btn"
       type="button"
       onClick={() => {Router.push(push)}}
     >

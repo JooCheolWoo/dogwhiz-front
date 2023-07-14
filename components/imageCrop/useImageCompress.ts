@@ -4,16 +4,16 @@ import imageCompression from "browser-image-compression";
 const useImageCompress = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const compressImage = async (imageFile: File) => {
+  const compressImage = async (maxWidthOrHeight: number ,imageFile: File) => {
     if (isLoading) return;
 
     setIsLoading(true);
 
     console.log(`원본 이미지 사이즈 : ${imageFile.size / 1024 / 1024} MB`);
 
-    const options = {
+    let options = {
       maxSizeMB: 2,
-      maxWidthOrHeight: 1920,
+      maxWidthOrHeight,
     };
 
     try {

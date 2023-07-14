@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { Formik, FormikProps, Field, Form, ErrorMessage } from 'formik';
 import { ErrorMsg, WarningMsg, SuccessMsg } from './../../modals/SimpleMsgModal';
 import { AxiosTryCatch } from '@/modules/api/AxiosTryCatch';
-import ImageCropModal from '@/modals/ImageCropModal';
-import { ResisterValidation } from '@/model/Validation';
+import { ResisterValidation, checkEmail, checkNickname } from '@/model/Validation';
 import { ReqResisterDto } from '@/model/Member';
 import useImageCompress from './../imageCrop/useImageCompress';
 import { dataURItoFile } from '@/modules/util/common';
@@ -17,20 +16,25 @@ export default function RegisterForm() {
   const [uploadImage, setUploadImage] = useState<string | null>(null);
   const [compressedImage, setCompressedImage] = useState<string | null>(null);
   const { isLoading: isCompressLoading, compressImage } = useImageCompress();
+  const [file, setFile] = useState<File>();
 
-  const handleUploadImage = (image: string) => setUploadImage(image);
+  const handleUploadImage = (image: string) => {
+    setUploadImage(image);
+  };
 
   const handleCompressImage = async () => {
     if (!uploadImage) return;
 
     const imageFile = dataURItoFile(uploadImage);
 
-    const compressedImage = await compressImage(imageFile);
+    const compressedImage = await compressImage(200, imageFile);
 
     // 이미지 서버 저장 로직
     if (!compressedImage) return;
     const imageUrl = URL.createObjectURL(compressedImage);
     setCompressedImage(imageUrl);
+    const file = new File([compressedImage], 'profile.png', { type: 'image/png' });
+    setFile(file);
   };
 
   useEffect(() => {
@@ -50,8 +54,8 @@ export default function RegisterForm() {
 
     const formData = new FormData();
     formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }));
-    if (compressedImage) {
-      formData.append('file', compressedImage);
+    if (file) {
+      formData.append('file', file);
     }
 
     await AxiosTryCatch(
@@ -93,6 +97,12 @@ export default function RegisterForm() {
             text: '닉네임 중복확인을 해주세요.',
           });
           setSubmitting(false);
+        } else if (isCompressLoading) {
+          WarningMsg({
+            title: 'Oops...',
+            text: '프로필 이미지 변환중입니다. 잠시만 기다려주세요.',
+          });
+          setSubmitting(false);
         } else {
           setSubmitting(true);
           handleSubmit(values);
@@ -125,7 +135,9 @@ export default function RegisterForm() {
                     />
                     <button
                       type="button"
-                      onClick={() => {}}
+                      onClick={() => {
+                        checkEmail(values.email, setAbleEmail);
+                      }}
                       disabled={(errors.email && touched.email) || values.email.length == 0}
                       className="w-44 hover_btn"
                     >
@@ -187,7 +199,9 @@ export default function RegisterForm() {
                     />
                     <button
                       type="button"
-                      onClick={() => {}}
+                      onClick={() => {
+                        checkNickname(values.nickname, setAbleNickname);
+                      }}
                       disabled={(errors.nickname && touched.nickname) || values.nickname.length == 0}
                       className="w-44 hover_btn"
                     >
@@ -206,14 +220,35 @@ export default function RegisterForm() {
                 <label className="text-xs font-bold">프로필 사진</label>
                 <div className="flex flex-raw items-center justify-around">
                   <div className="flex items-center space-x-4">
-                    {compressedImage ? (
-                      <img src={compressedImage} width={200} height={200} />
-                    ) : (
-                      <div className="cover">{isCompressLoading ? '이미지 압축 중..' : '이미지가 없어요.'}</div>
-                    )}
-                    <ImageCropper aspectRatio={1 / 1} onCrop={handleUploadImage}>
-                      <button className="hover_btn">사진등록</button>
-                    </ImageCropper>
+                    <div className="flex flex-col items-center">
+                      <img
+                        src={compressedImage ? compressedImage : '/images/blank.png'}
+                        width={200}
+                        height={200}
+                        alt="avatar"
+                        className="border-2"
+                      />
+                      <span className="text-sm font-bold text-blue-400 h-4">
+                        {isCompressLoading ? '이미지 압축 중..' : ''}
+                      </span>
+                    </div>
+                    <div className="flex flex-col space-y-4">
+                      <ImageCropper aspectRatio={1 / 1} onCrop={handleUploadImage}>
+                        <button type="button" className="hover_btn">
+                          사진등록
+                        </button>
+                      </ImageCropper>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCompressedImage(null);
+                          setUploadImage(null);
+                        }}
+                        className="hover_btn"
+                      >
+                        등록취소
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

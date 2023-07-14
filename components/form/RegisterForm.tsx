@@ -9,6 +9,7 @@ import { ReqResisterDto } from '@/model/Member';
 import useImageCompress from './../imageCrop/useImageCompress';
 import { dataURItoFile } from '@/modules/util/common';
 import ImageCropper from '../imageCrop/ImageCropper';
+import Image from 'next/image';
 
 export default function RegisterForm() {
   const [ableEmail, setAbleEmail] = useState<null | boolean>(null);
@@ -216,39 +217,37 @@ export default function RegisterForm() {
                   <ErrorMessage name="nickname" component="div" className="text-xs text-red-500 py-1 text-center" />
                 </div>
               </div>
-              <div className="flex flex-col space-y-6 h-60">
+              <div className="h-60">
                 <label className="text-xs font-bold">프로필 사진</label>
-                <div className="flex flex-raw items-center justify-around">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex flex-col items-center">
-                      <img
-                        src={compressedImage ? compressedImage : '/images/blank.png'}
-                        width={200}
-                        height={200}
-                        alt="avatar"
-                        className="border-2"
-                      />
-                      <span className="text-sm font-bold text-blue-400 h-4">
-                        {isCompressLoading ? '이미지 압축 중..' : ''}
-                      </span>
-                    </div>
-                    <div className="flex flex-col space-y-4">
-                      <ImageCropper aspectRatio={1 / 1} onCrop={handleUploadImage}>
-                        <button type="button" className="hover_btn">
-                          사진등록
-                        </button>
-                      </ImageCropper>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setCompressedImage(null);
-                          setUploadImage(null);
-                        }}
-                        className="hover_btn"
-                      >
-                        등록취소
+                <div className="flex justify-between p-4 items-center">
+                  <div className="flex flex-col">
+                    <Image
+                      src={compressedImage ? compressedImage : '/images/blank.png'}
+                      width={200}
+                      height={200}
+                      alt="avatar"
+                      className="ring-2 ring-gray-400 rounded-lg"
+                    />
+                    <span className="text-sm font-bold text-blue-400 h-4">
+                      {isCompressLoading ? '이미지 압축 중..' : ''}
+                    </span>
+                  </div>
+                  <div className="flex flex-col space-y-4">
+                    <ImageCropper aspectRatio={1 / 1} onCrop={handleUploadImage}>
+                      <button type="button" className="hover_btn w-40">
+                        사진등록
                       </button>
-                    </div>
+                    </ImageCropper>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCompressedImage(null);
+                        setUploadImage(null);
+                      }}
+                      className="hover_btn_sky w-40"
+                    >
+                      등록취소
+                    </button>
                   </div>
                 </div>
               </div>

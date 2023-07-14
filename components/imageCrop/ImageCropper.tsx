@@ -73,7 +73,7 @@ const ImageCropper = ({ children, aspectRatio, onCrop }: PropsType) => {
                   />
                 </div>
                 <div className="flex space-x-4 justify-end">
-                  <button onClick={() => setImage(null)} className="hover_btn">
+                  <button onClick={() => setImage(null)} className="hover_btn_sky">
                     취소
                   </button>
                   <button onClick={getCropData} className="hover_btn">

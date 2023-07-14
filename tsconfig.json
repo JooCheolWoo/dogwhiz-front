@@ -18,6 +18,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/sidebar/Sidebar.jsx", "modules/api/useAxiosSWR.js", "modules/api/AxiosTryCatch.gs"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/sidebar/Sidebar.jsx", "modules/api/useAxiosSWR.js", "modules/api/AxiosTryCatch.gs", "pages/loading.js"],
   "exclude": ["node_modules"]
 }

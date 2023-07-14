@@ -8,7 +8,7 @@ export default function Home() {
   const [banners, setBanners] = useState(res?.data || []);
 
   useEffect(() => {
-    if (res?.success) {
+    if (res?.data) {
       setBanners(res.data);
     }
   }, [res])

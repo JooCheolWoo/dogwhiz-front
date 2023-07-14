@@ -1,21 +1,23 @@
 import Axios from "./Axios";
 
-export const AxiosTryCatch = async (options : any, successCallback : Function | null, failCallback : Function | null) => {
+export const AxiosTryCatch = async (options, successCallback, failCallback) => {
     try {
         const response = await Axios({ ...options });
+        console.log(response)
 
-        if (response.data.status === 0) {
+        if (response.status === 0) {
             const successRes = {
                 success: true,
-                data: response.data.data,
+                data: response.data,
             };
             successCallback && successCallback(successRes);
             return successRes;
         } else {
             const failRes = {
                 success: false,
-                status: response.data.status,
-                message: response.data.message ? response.data.message : '요청 정보가 잘못되었습니다.',
+                status: response.status,
+                data: response.data,
+                message: response.message,
             };
             failCallback && await failCallback(failRes);
             return failRes;

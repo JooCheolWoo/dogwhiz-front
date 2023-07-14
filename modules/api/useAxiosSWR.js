@@ -1,27 +1,27 @@
 import Axios from './Axios';
 import useSWR from 'swr';
 
-const fetcher = async (url: string, axiosOptions: any) => {
+const fetcher = async (url, axiosOptions) => {
   const response = await Axios({ url, ...axiosOptions });
 
-  if (response.data.status === 0) {
+  if (response.status === 0) {
     const successRes = {
       success: true,
-      data: response.data.data,
+      data: response.data,
     };
     return successRes;
   } else {
     const failRes = {
       success: false,
-      status: response.data.status,
-      data: response.data.data,
-      message: response.data.message,
+      status: response.status,
+      data: response.data,
+      message: response.message,
     };
     return failRes;
   }
 };
 
-export const useAxiosSWR = (url: string, axiosOptions: any, swrOptions: any) => {
+export const useAxiosSWR = (url, axiosOptions, swrOptions) => {
     const { data, error } = useSWR(url, () => fetcher(url, axiosOptions), swrOptions);
     
     return {

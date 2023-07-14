@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useMemo, useEffect, ReactNode } from 'react';
-import { decryptData } from '@/modules/cryptoUtils';
-import LoginDto from '@/model/Member';
+import { decryptData } from '@/modules/util/cryptoUtils';
+import { LoginDto } from '@/model/Member';
 
 
 type IsLoginContextType = {

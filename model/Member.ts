@@ -1,4 +1,16 @@
-export type LoginDto = {
+export interface ReqResisterDto {
+  email: string;
+  password: string;
+  rePassword: string;
+  nickname: string;
+}
+
+export interface ReqLoginDto {
+  email: string;
+  password: string;
+}
+
+export interface ResLoginDto {
   id: number;
   email: string;
   nickname: string;
@@ -15,12 +27,12 @@ export type LoginDto = {
   tokenInfo: TokenInfo;
 };
 
-type TokenInfo = {
+interface TokenInfo {
   accessToken: string,
   expiredDate: number
 }
 
-type Role = {
+interface Role {
   id: number,
   role: string
 }

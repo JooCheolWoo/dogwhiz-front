@@ -3,7 +3,7 @@ import { ErrorMessage, Field, Form, Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { WarningMsg } from './../../modals/SimpleMsgModal';
 import Router from 'next/router';
-import { encryptData } from '@/modules/cryptoUtils';
+import { encryptData } from '@/modules/util/cryptoUtils';
 import { useLoginContext } from '@/modules/context/IsLoginContext';
 import { AxiosTryCatch } from '@/modules/api/AxiosTryCatch';
 
@@ -30,6 +30,7 @@ export const LoginForm = () => {
       (successRes: any) => {
         setIsLogin(true);
         localStorage.setItem('loginInfo', encryptData(successRes.data));
+        localStorage.setItem('token', encryptData(successRes.data.tokenInfo));
         Router.push('/');
       },
       (failRes: any) => {

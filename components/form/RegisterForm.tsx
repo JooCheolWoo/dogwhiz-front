@@ -1,105 +1,46 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Formik, FormikProps, Field, Form, ErrorMessage } from 'formik';
-import Image from 'next/image';
-import * as Yup from 'yup';
-import { ErrorMsg, WarningMsg, SuccessMsg } from './../../modals/SimpleMsgModal';
 import Router from 'next/router';
 import Link from 'next/link';
+import { Formik, FormikProps, Field, Form, ErrorMessage } from 'formik';
+import { ErrorMsg, WarningMsg, SuccessMsg } from './../../modals/SimpleMsgModal';
 import { AxiosTryCatch } from '@/modules/api/AxiosTryCatch';
-
-// Input 받는 자료 형식 정의
-interface Member {
-  email: string;
-  password: string;
-  rePassword: string;
-  nickname: string;
-}
-
-// Validation 설정
-const ValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('올바른 형식의 이메일을 입력해주세요.')
-    .required('이메일은 필수항목입니다.')
-    .matches(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      '올바른 형식의 이메일을 입력해주세요.'
-    ),
-  password: Yup.string()
-    .required('비밀번호는 필수항목입니다.')
-    .matches(
-      /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/,
-      '영소문자, 숫자, 특수문자 각 1개 이상 포함, 9자 이상이어야 합니다.'
-    ),
-  rePassword: Yup.string()
-    .oneOf([Yup.ref('password'), ''], '비밀번호가 일치하지 않습니다.')
-    .required('비밀번호 확인은 필수항목입니다.'),
-  nickname: Yup.string().required('닉네임은 필수항목입니다.'),
-});
+import ImageCropModal from '@/modals/ImageCropModal';
+import { ResisterValidation } from '@/model/Validation';
+import { ReqResisterDto } from '@/model/Member';
+import useImageCompress from './../imageCrop/useImageCompress';
+import { dataURItoFile } from '@/modules/util/common';
+import ImageCropper from '../imageCrop/ImageCropper';
 
 export default function RegisterForm() {
-  const [image, setImage] = useState('/images/blank.png');
-  const [sendFile, setSendFile] = useState<FileList | null>(null);
-
-  useEffect(() => {
-    if (!sendFile?.[0]) {
-      setImage('/images/blank.png');
-    }
-  }, [sendFile, image]);
-
-  const handleImage = (e: any) => {
-    // 내가 받을 파일은 하나기 때문에 index 0값의 이미지를 가짐
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // 이미지 화면에 띄우기
-    const reader = new FileReader();
-    // 파일을 불러오는 메서드, 종료되는 시점에 readyState는 Done(2)이 되고 onLoad 시작
-    reader.readAsDataURL(file);
-    reader.onload = (e: any) => {
-      if (reader.readyState === 2) {
-        // 파일 onLoad가 성공하면 2, 진행 중은 1, 실패는 0 반환
-        setImage(e.target.result);
-      }
-    };
-  };
-
-  // 중복확인 여부
   const [ableEmail, setAbleEmail] = useState<null | boolean>(null);
   const [ableNickname, setAbleNickname] = useState<null | boolean>(null);
+  const [uploadImage, setUploadImage] = useState<string | null>(null);
+  const [compressedImage, setCompressedImage] = useState<string | null>(null);
+  const { isLoading: isCompressLoading, compressImage } = useImageCompress();
 
-  // 이메일 중복 확인
-  const emailCheck = (email: string) => {
-    AxiosTryCatch(
-      {
-        method: 'get',
-        url: `/members/valid/email?email=${email}`,
-      },
-      () => {
-        setAbleEmail(true);
-      },
-      () => {
-        setAbleEmail(false);
-      }
-    );
+  const handleUploadImage = (image: string) => setUploadImage(image);
+
+  const handleCompressImage = async () => {
+    if (!uploadImage) return;
+
+    const imageFile = dataURItoFile(uploadImage);
+
+    const compressedImage = await compressImage(imageFile);
+
+    // 이미지 서버 저장 로직
+    if (!compressedImage) return;
+    const imageUrl = URL.createObjectURL(compressedImage);
+    setCompressedImage(imageUrl);
   };
 
-  const nicknameCheck = (nickname: string) => {
-    AxiosTryCatch(
-      {
-        method: 'get',
-        url: `/members/valid/nickname?nickname=${nickname}`,
-      },
-      () => {
-        setAbleNickname(true);
-      },
-      () => {
-        setAbleNickname(false);
-      }
-    );
-  };
+  useEffect(() => {
+    if (uploadImage) {
+      handleCompressImage();
+    }
+  }, [uploadImage]);
 
   // 최종 submit 버튼 클릭 시
-  const handleSubmit = async (values: Member) => {
+  const handleSubmit = async (values: ReqResisterDto) => {
     const request = {
       email: values.email,
       password: values.password,
@@ -109,8 +50,8 @@ export default function RegisterForm() {
 
     const formData = new FormData();
     formData.append('request', new Blob([JSON.stringify(request)], { type: 'application/json' }));
-    if (sendFile) {
-      formData.append('file', sendFile[0]);
+    if (compressedImage) {
+      formData.append('file', compressedImage);
     }
 
     await AxiosTryCatch(
@@ -120,12 +61,14 @@ export default function RegisterForm() {
         headers: { 'Content-Type': 'multipart/form-data' },
         data: formData,
       },
-      (res: any) => {
+      (SuccessRes: any) => {
         Router.replace('/');
         SuccessMsg({ title: `환영합니다`, text: `등록하신 이메일로 인증메일이 전송되었습니다` });
       },
-      (err: any) => ErrorMsg({ title: `회원가입(${err.status})`, text: `${err.message}` })
-    );
+      (failRes: any) => ErrorMsg({ title: `회원가입(${failRes.status})`, text: `${failRes.message}` })
+    ).catch((errData) => {
+      ErrorMsg({ title: `회원가입(${errData.status})`, text: `${errData.message}` });
+    });
   };
 
   return (
@@ -136,8 +79,8 @@ export default function RegisterForm() {
         rePassword: '',
         nickname: '',
       }}
-      validationSchema={ValidationSchema}
-      onSubmit={(data: Member, { setSubmitting }) => {
+      validationSchema={ResisterValidation}
+      onSubmit={(values: ReqResisterDto, { setSubmitting }) => {
         if (!ableEmail) {
           WarningMsg({
             title: 'Oops...',
@@ -152,12 +95,12 @@ export default function RegisterForm() {
           setSubmitting(false);
         } else {
           setSubmitting(true);
-          handleSubmit(data);
+          handleSubmit(values);
           setSubmitting(false);
         }
       }}
     >
-      {(props: FormikProps<Member>) => {
+      {(props: FormikProps<ReqResisterDto>) => {
         const { values, touched, errors, handleBlur, handleChange, isSubmitting, setFieldValue } = props;
         return (
           <div className="flex justify-center">
@@ -182,7 +125,7 @@ export default function RegisterForm() {
                     />
                     <button
                       type="button"
-                      onClick={() => emailCheck(values.email)}
+                      onClick={() => {}}
                       disabled={(errors.email && touched.email) || values.email.length == 0}
                       className="w-44 hover_btn"
                     >
@@ -244,9 +187,7 @@ export default function RegisterForm() {
                     />
                     <button
                       type="button"
-                      onClick={() => {
-                        nicknameCheck(values.nickname);
-                      }}
+                      onClick={() => {}}
                       disabled={(errors.nickname && touched.nickname) || values.nickname.length == 0}
                       className="w-44 hover_btn"
                     >
@@ -264,43 +205,17 @@ export default function RegisterForm() {
               <div className="flex flex-col space-y-6 h-60">
                 <label className="text-xs font-bold">프로필 사진</label>
                 <div className="flex flex-raw items-center justify-around">
-                  <label htmlFor="file">
-
-                    <img
-                      src={image}
-                      className="w-[180px] h-[180px] object-cover rounded-lg shadow-lg"
-                      alt="Avatar"
-                    />
-                  </label>
-                  <div className="flex flex-col items-center space-y-4">
-                    <label htmlFor="file" className="hover_btn hover:cursor-pointer text-sm">
-                      이미지 선택
-                    </label>
-                    {sendFile?.[0] ? (
-                      <span
-                        className="text-center text-sm w-48 bg-slate-100 p-1 rounded-lg"
-                        style={{ wordWrap: 'break-word' }}
-                      >
-                        {sendFile[0].name.length > 50 ? sendFile[0].name.substring(0, 50) + '...' : sendFile[0].name}
-                      </span>
+                  <div className="flex items-center space-x-4">
+                    {compressedImage ? (
+                      <img src={compressedImage} width={200} height={200} />
                     ) : (
-                      <span className="text-center text-sm w-48 bg-slate-100 p-1 rounded-lg">
-                        선택된 이미지가 없습니다.
-                      </span>
+                      <div className="cover">{isCompressLoading ? '이미지 압축 중..' : '이미지가 없어요.'}</div>
                     )}
+                    <ImageCropper aspectRatio={1 / 1} onCrop={handleUploadImage}>
+                      <button className="hover_btn">사진등록</button>
+                    </ImageCropper>
                   </div>
                 </div>
-                <input
-                  id="file"
-                  name="file"
-                  type="file"
-                  onChange={(e) => {
-                    handleChange(e);
-                    handleImage(e);
-                    setSendFile(e.target.files);
-                  }}
-                  className="hidden"
-                />
               </div>
               <div className="flex flex-col justify-center items-center">
                 <button className="w-40 hover_btn" type="submit" disabled={isSubmitting}>

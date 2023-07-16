@@ -1,8 +1,7 @@
-export interface PostDto {
+export interface BoardDto {
     id: number;
-    memberId: number;
-    memberNickname: string;
-    memberImageUrl: string;
+    writer: string;
+    writerImageUrl: string;
     category: string;
     subCategory: string;
     pinToTop: boolean;

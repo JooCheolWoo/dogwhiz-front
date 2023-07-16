@@ -3,7 +3,6 @@ import Axios from "./Axios";
 export const AxiosTryCatch = async (options, successCallback, failCallback) => {
     try {
         const response = await Axios({ ...options });
-        console.log(response)
 
         if (response.status === 0) {
             const successRes = {

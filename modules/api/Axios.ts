@@ -8,12 +8,6 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use(
     function (config) {
-        const encodedtoken = localStorage.getItem('token');
-        if (encodedtoken) {
-            const tokenInfo = decryptData(encodedtoken);
-            const accessToken = tokenInfo.accessToken;
-            config.headers.Authorization = 'Bearer ' + accessToken;
-        }
         return config;
     },
     function (error) {

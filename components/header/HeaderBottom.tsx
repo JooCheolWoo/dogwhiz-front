@@ -7,7 +7,7 @@ export default function HeaderBottom() {
       <div className="flex justify-between mx-res">
         <nav className="flex items-center space-x-8">
           <Menu title="홈" push="/" />
-          <Menu title="공지사항" push="/notice" />
+          <Menu title="공지사항" push="/notice?page=1" />
           <HeaderOpenMenu title='커뮤니티' items={comunityItems} />
           <HeaderOpenMenu title='산책친구' items={walkItems} />
           <HeaderOpenMenu title='개과사전' items={dictionaryItems} />

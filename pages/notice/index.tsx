@@ -14,8 +14,8 @@ export default function Home() {
     page: 1,
     size: 10,
     sort: 'createdAt,desc',
-    category: 'DWB010',
-    subCategory: 'DWB011',
+    category: '공지사항',
+    subCategory: '',
     type: '',
     search: '',
   };
